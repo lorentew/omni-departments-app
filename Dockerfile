@@ -1,6 +1,5 @@
-FROM openjdk:11
-MAINTAINER Willians Lorente
-EXPOSE 8081
-ARG JAR_FILE=target/*.jar
-COPY target/*.jar omni-departments-app.jar
-ENTRYPOINT ["java", "-jar" , "omni-departments-app.jar"]
+FROM tomcat:9.0.22
+LABEL maintainer="willore@gmail.com"
+ADD target/omni-departments-app.war /usr/local/tomcat/webapps/
+EXPOSE 8080
+CMD ["catalina.sh", "run"]
