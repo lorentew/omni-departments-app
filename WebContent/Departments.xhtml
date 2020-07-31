@@ -1,0 +1,94 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<!--   <ui:define name="corpo"> -->
+
+<h:head>
+	<title>OMNI - Cadastro de Departamentos</title>
+</h:head>
+
+
+<h1>Cadastro de Departamentos</h1>
+
+<h:form id="frm">
+
+	<h:panelGrid columns="4" id="painel-dialog-departamento">
+
+		<p:outputLabel value="Código: " for="id-departamento" />
+		<p:inputText id="id-departamento" size="10" maxlength="10" 
+			value="#{departmentsBean.depto.id}" />
+
+		<p:outputLabel value="Nome: " for="nome-departamento" />
+		<p:inputText id="nome-departamento" size="60" maxlength="80" 
+			value="#{departmentsBean.depto.name}" />
+
+		<p:outputLabel value="Local: " for="localidade-departamento" />
+		<p:inputText id="localidade-departamento" size="60" maxlength="80" 
+			value="#{departmentsBean.depto.region}" />
+
+		<p:outputLabel value="Cidade: " for="cidade-departamento" />
+		<p:inputText id="cidade-departamento" size="60" maxlength="80" 
+			value="#{departmentsBean.depto.city}" />
+
+		<p:outputLabel value="Estado: " for="estado" />
+		<p:selectOneMenu id="estado" value="#{departmentsBean.depto.state}" >
+			<f:selectItem itemLabel="Selecione" />
+			<f:selectItems value="#{departmentsBean.estados}" var="estado"
+				itemLabel="#{estado.descricao}" itemValue="#{estado}" />
+		</p:selectOneMenu>
+		
+	</h:panelGrid>
+
+	<h:panelGrid columns="1" id="painel-dialog-diretoria" layout="grid" styleClass="showcase-text-align-center">
+		<p:outputLabel for="diretoria" value="Diretoria: " />
+		<p:selectOneRadio id="diretoria" value="#{departmentsBean.depto.idBoard}" unselectable="true">
+			<f:selectItem itemLabel="E.I.S" itemValue="EIS" />
+			<f:selectItem itemLabel="Recuperação" itemValue="RECUPERACAO" />
+			<f:selectItem itemLabel="Negócios" itemValue="NEGOCIOS" />
+		</p:selectOneRadio>
+
+		<p:commandButton title="Gravar" rendered="#{departmentsBean.depto.edicao}"
+			actionListener="#{departmentsBean.getObject}" update="departamento-table">
+			<f:attribute name="depto" value="#{departmentsBean.depto}" />
+			<f:ajax render="@all" />
+		</p:commandButton>
+	</h:panelGrid>
+
+	<p:dataTable value="#{departmentsBean.departamentos}"
+		var="departamento" emptyMessage="Nenhum departamento cadastrado."
+		rows="10" paginator="true" paginatorPosition="bottom"
+		style="margin-top: 10px" id="departamento-table">
+
+		<p:column headerText="Código" sortBy="#{departamento.id}" width="6">
+			<h:outputText value="#{departamento.id}" />
+		</p:column>
+
+		<p:column headerText="Nome" width="250">
+			<h:outputText value="#{departamento.name}" />
+		</p:column>
+
+		<p:column headerText="" width="100">
+			<p:commandButton title="Editar" action="#{departmentsBean.editar}"
+				actionListener="#{departmentsBean.getParameter}" update="frm:painel-dialog-departamento">
+				<f:attribute name="parametro" value="#{departamento.id}" />
+			</p:commandButton>
+			<p:commandButton title="Deletar" action="#{departmentsBean.deletar}"
+				actionListener="#{departmentsBean.getParameter}">
+				<f:attribute name="parametro" value="#{departamento.id}" />
+				<f:ajax render="@all" />
+			</p:commandButton>
+		</p:column>
+
+	</p:dataTable>
+
+</h:form>
+
+<!-- </ui:define> -->
+</html>
+
